@@ -36,14 +36,14 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class AndroidWifiModule extends ReactContextBaseJavaModule {
+public class AndroidWifiUpdatedModule extends ReactContextBaseJavaModule {
 
 	//WifiManager Instance
 	WifiManager wifi;
 	ReactApplicationContext reactContext;
 
 	//Constructor
-	public AndroidWifiModule(ReactApplicationContext reactContext) {
+	public AndroidWifiUpdatedModule(ReactApplicationContext reactContext) {
 		super(reactContext);
 
 		wifi = (WifiManager)reactContext.getSystemService(Context.WIFI_SERVICE);
@@ -53,7 +53,7 @@ public class AndroidWifiModule extends ReactContextBaseJavaModule {
 	//Name for module register to use:
 	@Override
 	public String getName() {
-		return "AndroidWifiModule";
+		return "AndroidWifiUpdatedModule";
 	}
 
 	//Method to load wifi list into string via Callback. Returns a stringified JSONArray

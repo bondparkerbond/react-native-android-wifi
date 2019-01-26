@@ -1,8 +1,8 @@
 /**
- * @providesModule AndroidWifiModule
+ * @providesModule AndroidWifiUpdatedModule
  */
 
 'use strict';
 
 import { NativeModules } from 'react-native';
-module.exports = NativeModules.AndroidWifiModule;
+module.exports = NativeModules.AndroidWifiUpdatedModule;

@@ -1,7 +1,9 @@
 # react-native-android-wifi
+
 ## Link Manually
 
-* In `android/setting.gradle`
+- In `android/setting.gradle`
+
 ```gradle
 ...
 include ':app'
@@ -9,7 +11,7 @@ include ':react-native-android-wifi'
 project(':react-native-android-wifi').projectDir = new File(rootProject.projectDir, '../node_modules/react-native-android-wifi/android')
 ```
 
-* In `android/app/build.gradle`
+- In `android/app/build.gradle`
 
 ```gradle
 ...
@@ -20,11 +22,11 @@ dependencies {
 ```
 
 On newer versions of React Native (0.29.0+):
-* register module (in MainApplication.java)
 
+- register module (in MainApplication.java)
 
 ```java
-import com.devstepbcn.wifi.AndroidWifiPackage;  // <--- import
+import com.devstepbcn.wifi.AndroidWifiUpdatedPackage;  // <--- import
 
 public class MainApplication extends Application implements ReactApplication {
   ......
@@ -33,7 +35,7 @@ public class MainApplication extends Application implements ReactApplication {
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
           new MainReactPackage(),
-          new AndroidWifiPackage(), // <------ add here
+          new AndroidWifiUpdatedPackage(), // <------ add here
       );
     }
   };
@@ -41,14 +43,14 @@ public class MainApplication extends Application implements ReactApplication {
 
 On older versions of React Native (>=0.18<0.29.0):
 
-* register module (in MainActivity.java)
+- register module (in MainActivity.java)
 
 ```java
-import com.devstepbcn.wifi.AndroidWifiPackage;  // <--- import
+import com.devstepbcn.wifi.AndroidWifiUpdatedPackage;  // <--- import
 
 public class MainActivity extends ReactActivity {
   ......
-  
+
   /**
    * A list of packages used by the app. If the app uses additional views
    * or modules besides the default ones, add more packages here.
@@ -56,7 +58,7 @@ public class MainActivity extends ReactActivity {
     @Override
     protected List<ReactPackage> getPackages() {
       return Arrays.<ReactPackage>asList(
-        new AndroidWifiPackage(), // <------ add here
+        new AndroidWifiUpdatedPackage(), // <------ add here
         new MainReactPackage());
     }
 }
@@ -64,10 +66,10 @@ public class MainActivity extends ReactActivity {
 
 On older versions of React Native:
 
-* register module (in MainActivity.java)
+- register module (in MainActivity.java)
 
 ```java
-import com.devstepbcn.wifi.AndroidWifiPackage;  // <--- import
+import com.devstepbcn.wifi.AndroidWifiUpdatedPackage;  // <--- import
 
 public class MainActivity extends Activity implements DefaultHardwareBackBtnHandler {
   ......
@@ -82,7 +84,7 @@ public class MainActivity extends Activity implements DefaultHardwareBackBtnHand
       .setBundleAssetName("index.android.bundle")
       .setJSMainModuleName("index.android")
       .addPackage(new MainReactPackage())
-      .addPackage(new AndroidWifiPackage())              // <------ add here
+      .addPackage(new AndroidWifiUpdatedPackage())              // <------ add here
       .setUseDeveloperSupport(BuildConfig.DEBUG)
       .setInitialLifecycleState(LifecycleState.RESUMED)
       .build();

@@ -1,7 +1,7 @@
 {
-  "name": "react-native-android-wifi",
-  "version": "0.0.38",
-  "description": "A react-native implementation for viewing and connecting to Wifi networks on Android devices.",
+  "name": "react-native-android-wifi-updated",
+  "version": "0.1.38",
+  "description": "A react-native implementation for viewing and connecting to Wifi networks on Android devices. Forked from Ferran Reventos <devstepbcn@gmail.com>, https://github.com/devstepbcn/react-native-android-wifi at version 0.0.38. This includes fixes for the forceWifi method that avoids a bug encountered in Android 6.0.0.",
   "main": "index.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -12,11 +12,15 @@
     "react-native",
     "android",
     "wifi",
-    "connection"
+    "connection",
+    "marshmallow",
+    "nougout",
+    "oreo",
+    "pie"
   ],
-  "author": "Ferran Reventos <devstepbcn@gmail.com>",
+  "author": "Parker Bond <parkertest007@gmail.com>",
   "license": "ISC",
-  "repository": "https://github.com/devstepbcn/react-native-android-wifi",
+  "repository": "https://github.com/bondparkerbond/react-native-android-wifi-updated",
   "bugs": "https://github.com/devstepbcn/react-native-android-wifi/issues",
   "peerDependencies": {
     "react-native": ">=0.13"
@@ -24,8 +28,7 @@
   "dependencies": {},
   "rnpm": {
     "android": {
-      "packageInstance": "new AndroidWifiPackage()"
+      "packageInstance": "new AndroidWifiUpdatedPackage()"
     }
   }
-
 }

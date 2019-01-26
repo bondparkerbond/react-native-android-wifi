@@ -99,6 +99,12 @@ public class AndroidWifiModule extends ReactContextBaseJavaModule {
 	//Receives a boolean to enable forceWifiUsage if true, and disable if false.
 	//Is important to enable only when communicating with the device via wifi 
 	//and remember to disable it when disconnecting from device.
+
+  // There is a bug in Android 6.0.0, but not in 6.0.1 or later, that requires us to leave the app and
+  // request the advanced permission to modify system settings in order to force wifi usage.
+  // Forcing wifi usage can be handled in later versions with just normal permissions needed in later versions
+  // See: https://stackoverflow.com/questions/32185628/connectivitymanager-requestnetwork-in-android-6-0#answer-33509180
+  // For now, this will only work on SDK 24(Android 7) and above, May make a different version with 23/6.0.X support
 	@ReactMethod
 	public void forceWifiUsage(boolean useWifi) {
         boolean canWriteFlag = false;
@@ -106,36 +112,49 @@ public class AndroidWifiModule extends ReactContextBaseJavaModule {
         if (useWifi) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                    canWriteFlag = Settings.System.canWrite(reactContext);
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    canWriteFlag = true
+                    // System.out.print(canWriteFlag);
+                } else if (Build.VERSION.RELEASE.equals("6.0.1")) {
+                    canWriteFlag = true
+                } else if (Build.VERSION.RELEASE.equals("6.0.0")) {
+                    // maybe only do this if equal to M/6?
+                    // canWriteFlag = Settings.System.canWrite(reactContext);
+                    // if (!canWriteFlag) {
+                    //     Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
+                    //     intent.setData(Uri.parse("package:" + reactContext.getPackageName()));
+                    //     intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
 
-                    if (!canWriteFlag) {
-                        Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS);
-                        intent.setData(Uri.parse("package:" + reactContext.getPackageName()));
-                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-
-                        reactContext.startActivity(intent);
-                    }
+                    //     reactContext.startActivity(intent);
+                    // }
+                    canWriteFlag = false
+                } else {
+                    // I don't care to support Lollipop or older versions
+                    canWriteFlag = false
                 }
 
-                if (((Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) && canWriteFlag) || ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) && !(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M))) {
+                // if (((Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) && canWriteFlag) || ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) && !(Build.VERSION.SDK_INT >= Build.VERSION_CODES.M))) {
+                // if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) && canWriteFlag) { // <--- Too cool for Marshmallows || ^^^ OG VERSION ^^^
+                if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) && canWriteFlag) {
                     final ConnectivityManager manager = (ConnectivityManager) reactContext
                             .getSystemService(Context.CONNECTIVITY_SERVICE);
                     NetworkRequest.Builder builder;
                     builder = new NetworkRequest.Builder();
-                    //set the transport type do WIFI
+                    //set the transport type to WIFI
                     builder.addTransportType(NetworkCapabilities.TRANSPORT_WIFI);
 
 
                     manager.requestNetwork(builder.build(), new ConnectivityManager.NetworkCallback() {
                         @Override
                         public void onAvailable(Network network) {
-                            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                            // if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) { // Can use if I request ACTION_MANAGE_WRITE_SETTINGS on 6.0.0
+                            if ((Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) || (Build.VERSION.RELEASE.equals("6.0.1"))) {
                                 manager.bindProcessToNetwork(network);
-                            } else {
-                                //This method was deprecated in API level 23
-                                ConnectivityManager.setProcessDefaultNetwork(network);
                             }
+                            // } else {
+                            //     //This method was deprecated in API level 23
+                            //     ConnectivityManager.setProcessDefaultNetwork(network);
+                            // }
                             try {
                             } catch (Exception e) {
                                 e.printStackTrace();
@@ -520,4 +539,3 @@ public class AndroidWifiModule extends ReactContextBaseJavaModule {
 		}
 	}
 }
-

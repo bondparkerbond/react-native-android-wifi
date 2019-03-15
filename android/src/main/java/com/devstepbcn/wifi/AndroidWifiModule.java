@@ -106,7 +106,10 @@ public class AndroidWifiModule extends ReactContextBaseJavaModule {
         if (useWifi) {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+                    canWriteFlag = true;
+                    // Only need ACTION_MANAGE_WRITE_SETTINGS on 6.0.0, regular permissions suffice on later versions
+                } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
                     canWriteFlag = Settings.System.canWrite(reactContext);
 
                     if (!canWriteFlag) {
@@ -253,6 +256,10 @@ public class AndroidWifiModule extends ReactContextBaseJavaModule {
 		}
 
 		List<WifiConfiguration> mWifiConfigList = wifi.getConfiguredNetworks();
+		if (mWifiConfigList == null) {
+		    return false;
+        }
+
 		int updateNetwork = -1;
 
 		// Use the existing network config if exists
@@ -316,6 +323,11 @@ public class AndroidWifiModule extends ReactContextBaseJavaModule {
 	@ReactMethod
 	public void connectToHiddenNetwork(String ssid, String password, Callback networkAdded) {
 		List<WifiConfiguration> list = wifi.getConfiguredNetworks();
+		if (list == null) {
+			networkAdded.invoke(false);
+		    return;
+        }
+
 		int updateNetwork = -1;
 
 		// check if network config exists and it's hidden
@@ -419,6 +431,10 @@ public class AndroidWifiModule extends ReactContextBaseJavaModule {
 	@ReactMethod
 	public void isRemoveWifiNetwork(String ssid, final Callback callback) {
 	    List<WifiConfiguration> mWifiConfigList = wifi.getConfiguredNetworks();
+        if (mWifiConfigList == null) {
+            return;
+        }
+
 	    for (WifiConfiguration wifiConfig : mWifiConfigList) {
 			String comparableSSID = ('"' + ssid + '"'); //Add quotes because wifiConfig.SSID has them
 			if(wifiConfig.SSID.equals(comparableSSID)) {
@@ -464,6 +480,10 @@ public class AndroidWifiModule extends ReactContextBaseJavaModule {
 
 	private WifiConfiguration IsExist(String SSID) {
 		List<WifiConfiguration> existingConfigs = wifi.getConfiguredNetworks();
+		if (existingConfigs == null) {
+			return null;
+		}
+
 		for (WifiConfiguration existingConfig : existingConfigs) {
 			if (existingConfig.SSID.equals("\"" + SSID + "\"")) {
 				return existingConfig;
@@ -520,4 +540,3 @@ public class AndroidWifiModule extends ReactContextBaseJavaModule {
 		}
 	}
 }
-

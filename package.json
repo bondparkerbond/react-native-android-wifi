@@ -1,5 +1,5 @@
 {
-  "name": "react-native-android-wifi",
+  "name": "@bondparkerbond/react-native-android-wifi",
   "version": "0.0.39",
   "description": "A react-native implementation for viewing and connecting to Wifi networks on Android devices.",
   "main": "index.js",
@@ -16,8 +16,13 @@
   ],
   "author": "Ferran Reventos <devstepbcn@gmail.com>",
   "license": "ISC",
-  "repository": "https://github.com/devstepbcn/react-native-android-wifi",
-  "bugs": "https://github.com/devstepbcn/react-native-android-wifi/issues",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/devstepbcn/react-native-android-wifi.git"
+  },
+  "bugs": {
+    "url": "https://github.com/devstepbcn/react-native-android-wifi/issues"
+  },
   "peerDependencies": {
     "react-native": ">=0.13"
   },
@@ -26,6 +31,9 @@
     "android": {
       "packageInstance": "new AndroidWifiPackage()"
     }
+  },
+  "homepage": "https://github.com/devstepbcn/react-native-android-wifi#readme",
+  "directories": {
+    "doc": "docs"
   }
-
 }
